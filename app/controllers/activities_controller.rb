@@ -3,7 +3,8 @@ class ActivitiesController < ApplicationController
 
   # GET /activities
   def index
-    @activities = Activity.all
+    date = params[:date] ? Date.parse(params[:date]) : Date.today
+    @activities = Activity.where(date: date).order(:start_time)
   end
 
   # GET /activities/1
