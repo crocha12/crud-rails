@@ -3,8 +3,8 @@
 <%= render @activity %>
 
 <div>
-  <%= link_to "Edit this activity", edit_activity_path(@activity) %> |
-  <%= link_to "Back to activities", activities_path %>
+  <%= link_to "Edit this activity", edit_activity_path(@activity), class: "text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2" %> |
+  <%= link_to "Back to activities", activities_path, class: "text-center bg-gray-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2" %>
 
-  <%= button_to "Destroy this activity", @activity, method: :delete %>
+  <%= button_to "Destroy this activity", @activity, method: :delete, class: "text-center bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2" %>
 </div>
