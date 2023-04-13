@@ -18,11 +18,11 @@ RSpec.describe "/activities", type: :request do
   # Activity. As you add validations to Activity, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {title: "Test", description: "Test", date: "2020-01-01", start_time: "12:00", end_time: "13:00"}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {title: "Test", description: "Test", date: "2021-02-01", start_time: "14:00", end_time: "13:00"}
   }
 
   describe "GET /index" do
@@ -40,7 +40,7 @@ RSpec.describe "/activities", type: :request do
       expect(response).to be_successful
     end
   end
-
+  
   describe "GET /new" do
     it "renders a successful response" do
       get new_activity_url
@@ -82,21 +82,33 @@ RSpec.describe "/activities", type: :request do
         post activities_url, params: { activity: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
-    
+    end
+
+    context "with conflicts" do
+      let(:new_attributes_2) {
+        {title: "Test2", description: "Test", date: "2020-01-01", start_time: "12:00", end_time: "14:00"}
+      }
+
+      it "does not create a new Activity" do
+        Activity.create! valid_attributes
+        post activities_url, params: { activity: new_attributes_2 }
+        expect(response).to have_http_status(:unprocessable_entity)
+
+      end
     end
   end
 
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {title: "Test2", description: "Test", date: "2022-01-04", start_time: "12:00", end_time: "13:00"}
       }
 
       it "updates the requested activity" do
         activity = Activity.create! valid_attributes
         patch activity_url(activity), params: { activity: new_attributes }
         activity.reload
-        skip("Add assertions for updated state")
+        expect(activity.title).to eq("Test2")
       end
 
       it "redirects to the activity" do
